@@ -56,7 +56,7 @@ form.addEventListener('submit', async (e) => {
       `Phone: ${data.get('phone')}\nEmail: ${data.get('email') || '-'}\nCity: ${data.get('city') || '-'}\n` +
       `Lab size: ${data.get('lab_size') || '-'}\nLooking for: ${interests}`
     );
-    window.location.href = `mailto:info@genalphalabs.com?subject=${encodeURIComponent('Robotics Lab Proposal — ' + (data.get('name') || 'Enquiry'))}&body=${body}`;
+    window.location.href = `mailto:genalphalabs11@gmail.com?subject=${encodeURIComponent('Robotics Lab Proposal — ' + (data.get('name') || 'Enquiry'))}&body=${body}`;
     statusEl.textContent = 'Opening your email app to send the enquiry…';
     statusEl.className = 'form-status ok';
     return;
