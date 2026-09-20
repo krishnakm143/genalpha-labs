@@ -240,6 +240,3 @@ body.js .reveal.in { opacity: 1; transform: none; transition: opacity .8s var(--
 .cm-mail:hover { background: var(--blue-soft); border-color: var(--blue); }
 .cm-call { color: var(--ink); }
 .cm-call:hover { border-color: var(--ink); }
-
-/* ---------- Free tag ---------- */
-.free-tag { display: inline-block; margin-left: .5rem; vertical-align: middle; font-family: var(--fd); font-weight: 700; font-size: .58em; letter-spacing: .08em; color: #fff; background: #16A34A; padding: .28em .7em; border-radius: 100px; box-shadow: 0 4px 10px rgba(22,163,74,.3); }
