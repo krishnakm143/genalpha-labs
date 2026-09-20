@@ -7,7 +7,11 @@ const nav = document.getElementById('nav');
 const fab = document.querySelector('.fab');
 const onScroll = () => {
   nav.classList.toggle('scrolled', scrollY > 20);
-  if (fab) fab.classList.toggle('show', scrollY > 700);
+  if (fab) {
+    const c = document.getElementById('contact');
+    const nearEnd = c && c.getBoundingClientRect().top < innerHeight * 0.85;
+    fab.classList.toggle('show', scrollY > 700 && !nearEnd);
+  }
   const h = document.documentElement;
   document.getElementById('scrollBar').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100).toFixed(2) + '%';
 };

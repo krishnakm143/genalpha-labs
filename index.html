@@ -24,7 +24,8 @@
   <meta property="og:image" content="https://genalphalabs.in/assets/hero-lab.jpg">
   <link rel="canonical" href="https://genalphalabs.in/">
   <meta name="theme-color" content="#0B2A6B">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B2A6B'/%3E%3Ccircle cx='16' cy='13' r='6' fill='none' stroke='%23fff' stroke-width='2'/%3E%3Ccircle cx='13.5' cy='12' r='1.4' fill='%23fff'/%3E%3Ccircle cx='18.5' cy='12' r='1.4' fill='%23fff'/%3E%3Cpath d='M16 7v-3M10 22h12v3H10z' stroke='%2338BDF8' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -40,12 +41,12 @@
         "@id": "https://genalphalabs.in/#org",
         "name": "GenAlpha Labs",
         "url": "https://genalphalabs.in/",
-        "logo": "https://genalphalabs.in/assets/hero-lab.jpg",
+        "logo": "https://genalphalabs.in/assets/logo-512.png",
         "image": "https://genalphalabs.in/assets/hero-lab.jpg",
         "description": "GenAlpha Labs designs, supplies and sets up complete Robotics & Technology Labs for schools, colleges and institutions — professional equipment, custom robotic systems, lab infrastructure and technical support.",
         "email": "genalphalabs11@gmail.com",
         "telephone": "+91-8169102798",
-        "address": { "@type": "PostalAddress", "addressRegion": "Maharashtra", "addressCountry": "IN" },
+        "address": { "@type": "PostalAddress", "streetAddress": "Malad West", "addressLocality": "Mumbai", "addressRegion": "Maharashtra", "addressCountry": "IN" },
         "contactPoint": {
           "@type": "ContactPoint",
           "telephone": "+91-8169102798",
@@ -73,7 +74,7 @@
         "telephone": "+91-8169102798",
         "priceRange": "$$",
         "areaServed": "IN",
-        "address": { "@type": "PostalAddress", "addressRegion": "Maharashtra", "addressCountry": "IN" },
+        "address": { "@type": "PostalAddress", "streetAddress": "Malad West", "addressLocality": "Mumbai", "addressRegion": "Maharashtra", "addressCountry": "IN" },
         "hasOfferCatalog": {
           "@type": "OfferCatalog",
           "name": "Services",
@@ -99,12 +100,8 @@
   <header class="nav" id="nav">
     <div class="wrap nav-inner">
       <a href="#home" class="brand" aria-label="GenAlpha Labs home">
-        <svg viewBox="0 0 32 32" width="34" height="34" aria-hidden="true">
-          <rect width="32" height="32" rx="8" fill="#0B2A6B"/>
-          <circle cx="16" cy="13" r="6" fill="none" stroke="#fff" stroke-width="2"/>
-          <circle cx="13.5" cy="12" r="1.4" fill="#fff"/><circle cx="18.5" cy="12" r="1.4" fill="#fff"/>
-          <path d="M16 7v-3M10 22h12v3H10z" stroke="#38BDF8" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+        <img class="brand-logo brand-logo-light" src="assets/logo-ga.png" alt="GenAlpha Labs logo" width="56" height="40">
+        <img class="brand-logo brand-logo-dark" src="assets/logo-ga-dark.png" alt="" aria-hidden="true" width="56" height="40">
         <span>GenAlpha<span class="brand-accent"> Labs</span></span>
       </a>
       <nav class="nav-links" id="navLinks" aria-label="Main">
@@ -417,6 +414,7 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <div class="footer-brand">
+        <img class="footer-logo" src="assets/logo-ga.png" alt="GenAlpha Labs logo" width="78" height="56">
         <span>GenAlpha<span class="brand-accent"> Labs</span></span>
         <p>Complete robotics &amp; technology labs — designed, supplied and set up around your institution.</p>
       </div>
