@@ -24,7 +24,7 @@
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: var(--nav-h); -webkit-text-size-adjust: 100%; }
-body { font-family: var(--fb); background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 16px; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--fb); background: var(--paper); color: var(--ink); line-height: 1.6; font-size: 1rem; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 img, svg { display: block; max-width: 100%; }
 .wrap { width: min(1200px, 100% - 3rem); margin-inline: auto; }
 ::selection { background: var(--blue); color: #fff; }
@@ -290,4 +290,27 @@ p { overflow-wrap: break-word; }
 @media (max-width: 360px) {
   .brand span { font-size: .95rem; }
   .brand-logo { height: 30px; }
+}
+
+/* ---------- Fluid card rows: never squeeze 5 cards into a narrow screen ---------- */
+.serve-grid, .why-grid { grid-template-columns: repeat(5, 1fr); }
+@media (max-width: 1199px) { .serve-grid, .why-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 700px)  { .serve-grid, .why-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .serve-grid, .why-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Large monitors: scale the whole layout up instead of leaving it tiny ---------- */
+@media (min-width: 1600px) {
+  html { font-size: 17.5px; }
+  .wrap { width: min(1360px, 100% - 4rem); }
+  .proj-grid { grid-template-rows: repeat(2, 310px); }
+  .brand-logo { height: 46px; }
+  .hero-inner > * { max-width: 860px; }
+}
+@media (min-width: 2200px) {
+  html { font-size: 20px; }
+  .wrap { width: min(1600px, 100% - 6rem); }
+  .proj-grid { grid-template-rows: repeat(2, 370px); }
+  .brand-logo { height: 54px; }
+  .hero-inner > * { max-width: 1000px; }
+  :root { --nav-h: 92px; }
 }
