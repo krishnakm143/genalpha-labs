@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://genalphalabs.in/sitemap.xml
