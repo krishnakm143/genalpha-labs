@@ -22,9 +22,7 @@ python3 -m http.server 8080
 3. Add custom domain later (genalphalabs.com etc.)
 
 ## ⚠️ Before going live — fill in real details
-1. **Contact form** — submits via FormSubmit (free) straight to `genalphalabs11@gmail.com`.
-   One-time: the first submission emails an **"Activate form"** link to that inbox — click it once.
-   Visitors can also send the same details on WhatsApp (button under the form).
+1. **Contact form** — "Request a proposal" opens WhatsApp (+91 8169102798) with all form details pre-filled. No email service needed.
 2. Contact buttons: WhatsApp/Call +91 8169102798, email genalphalabs11@gmail.com
 
 ## To add later (per brief)

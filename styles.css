@@ -315,12 +315,6 @@ p { overflow-wrap: break-word; }
   :root { --nav-h: 92px; }
 }
 
-/* ---------- Form: WhatsApp alternative ---------- */
-.form-alt { display: flex; align-items: center; gap: .9rem; margin-top: .9rem; }
-.form-alt > span { color: var(--muted); font-size: .85rem; }
-.wa-send { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: .5rem; font-family: var(--fd); font-weight: 600; font-size: .95rem; padding: .8rem 1.1rem; border-radius: 100px; border: 1.5px solid rgba(30,163,75,.45); background: #fff; color: var(--wa); cursor: pointer; transition: background .2s, border-color .2s, transform .25s var(--e); }
-.wa-send:hover { background: #EEFBF2; border-color: var(--wa); transform: translateY(-1px); }
-
 /* ---------- Project photo lightbox ---------- */
 .proj { cursor: zoom-in; }
 .proj:focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; }
@@ -339,3 +333,8 @@ p { overflow-wrap: break-word; }
 .lb-prev { left: .8rem; } .lb-next { right: .8rem; }
 @media (max-width: 560px) { .lb-hint { display: none; } .lb-nav { width: 40px; height: 40px; top: auto; bottom: 4.6rem; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .lb-stage img { transition: none; } }
+
+/* ---------- Form: WhatsApp submit ---------- */
+.btn-wa { background: var(--wa); box-shadow: 0 10px 26px rgba(30,163,75,.32); }
+.btn-wa:hover { background: #178A40; box-shadow: 0 16px 34px rgba(30,163,75,.42); }
+.form-note { margin-top: .7rem; color: var(--muted); font-size: .86rem; text-align: center; }

@@ -43,10 +43,9 @@ if (reduce || !('IntersectionObserver' in window)) {
 // year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// ---------- lead form: direct email delivery (FormSubmit) + WhatsApp option ----------
+// ---------- lead form: "Request a proposal" sends the details on WhatsApp ----------
 const form = document.getElementById('leadForm');
 const statusEl = document.getElementById('formStatus');
-const submitBtn = document.getElementById('submitBtn');
 const WA_NUMBER = '918169102798';
 
 function enquiryText() {
@@ -58,31 +57,15 @@ function enquiryText() {
     `Lab size: ${d.get('lab_size') || '-'}\nLooking for: ${interests}`;
 }
 function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = 'form-status ' + (cls || ''); }
-function requireBasics() {
-  const name = form.name.value.trim(), phone = form.phone.value.trim();
-  if (!name || !phone) { setStatus('Please enter your name and phone number.', 'err'); (name ? form.phone : form.name).focus(); return false; }
-  return true;
-}
 
-document.getElementById('waSend').addEventListener('click', () => {
-  if (!requireBasics()) return;
-  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(enquiryText())}`, '_blank', 'noopener');
-});
-
-form.addEventListener('submit', async (e) => {
+form.addEventListener('submit', (e) => {
   e.preventDefault();
-  if (!requireBasics()) return;
-  submitBtn.disabled = true; setStatus('Sending…');
-  try {
-    const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-    const j = await res.json().catch(() => ({}));
-    if (res.ok && String(j.success) === 'true') {
-      form.reset();
-      setStatus('Thank you! Your request has been sent — we\'ll get back to you with a proposal soon.', 'ok');
-    } else { throw new Error(j.message || 'send failed'); }
-  } catch {
-    setStatus('Could not send right now — please use the WhatsApp button below or call us.', 'err');
-  } finally { submitBtn.disabled = false; }
+  const name = form.name.value.trim(), phone = form.phone.value.trim();
+  if (!name || !phone) { setStatus('Please enter your name and phone number.', 'err'); (name ? form.phone : form.name).focus(); return; }
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(enquiryText())}`;
+  setStatus('Opening WhatsApp… press send to submit your request.', 'ok');
+  // same-tab navigation is the most reliable way to hand off to the WhatsApp app on phones
+  window.location.href = url;
 });
 
 // ---------- lightbox for project photos ----------
