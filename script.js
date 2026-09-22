@@ -58,14 +58,22 @@ function enquiryText() {
 }
 function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = 'form-status ' + (cls || ''); }
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = form.name.value.trim(), phone = form.phone.value.trim();
   if (!name || !phone) { setStatus('Please enter your name and phone number.', 'err'); (name ? form.phone : form.name).focus(); return; }
-  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(enquiryText())}`;
-  setStatus('Opening WhatsApp… press send to submit your request.', 'ok');
-  // same-tab navigation is the most reliable way to hand off to the WhatsApp app on phones
-  window.location.href = url;
+  const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(enquiryText())}`;
+  const btn = document.getElementById('submitBtn'); btn.disabled = true;
+  setStatus('Sending…');
+  // 1) email the enquiry to the team (wait max 4s so the WhatsApp hand-off never feels stuck)
+  const fd = new FormData(form); fd.append('interests', fd.getAll('interest').join(', ') || '-');
+  const send = fetch(form.action, { method: 'POST', body: fd, headers: { Accept: 'application/json' }, keepalive: true })
+    .then(r => r.json()).then(j => String(j.success) === 'true').catch(() => false);
+  const emailed = await Promise.race([send, new Promise(r => setTimeout(() => r(null), 4000))]);
+  // 2) open WhatsApp with the same details
+  setStatus(emailed === false ? 'Opening WhatsApp… (email could not be sent, WhatsApp will reach us).' : 'Sent by email — opening WhatsApp, press send to confirm.', 'ok');
+  btn.disabled = false;
+  window.location.href = waUrl;
 });
 
 // ---------- lightbox for project photos ----------
