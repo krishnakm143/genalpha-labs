@@ -22,13 +22,10 @@ python3 -m http.server 8080
 3. Add custom domain later (genalphalabs.com etc.)
 
 ## ⚠️ Before going live — fill in real details
-1. **Contact form** — currently opens the visitor's email app (mailto fallback).
-   To receive enquiries directly:
-   - Sign up free at https://formspree.io
-   - Create a form → get an ID like `https://formspree.io/f/abcd1234`
-   - In `index.html`, replace `YOUR_FORM_ID` in the form's `action`
-2. **Email in fallback** — in `script.js`, replace `info@genalphalabs.com` with the real email
-3. Add real **phone/email/address** if you want them shown (currently form-only per brief)
+1. **Contact form** — submits via FormSubmit (free) straight to `genalphalabs11@gmail.com`.
+   One-time: the first submission emails an **"Activate form"** link to that inbox — click it once.
+   Visitors can also send the same details on WhatsApp (button under the form).
+2. Contact buttons: WhatsApp/Call +91 8169102798, email genalphalabs11@gmail.com
 
 ## To add later (per brief)
 - A separate **Learning & Programs** page for the education content

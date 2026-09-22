@@ -43,35 +43,102 @@ if (reduce || !('IntersectionObserver' in window)) {
 // year
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// lead form (Formspree + mailto fallback)
+// ---------- lead form: direct email delivery (FormSubmit) + WhatsApp option ----------
 const form = document.getElementById('leadForm');
 const statusEl = document.getElementById('formStatus');
 const submitBtn = document.getElementById('submitBtn');
-const CONFIGURED = !form.action.includes('YOUR_FORM_ID');
+const WA_NUMBER = '918169102798';
+
+function enquiryText() {
+  const d = new FormData(form);
+  const interests = d.getAll('interest').join(', ') || '-';
+  return `Hi GenAlpha Labs, I'd like a robotics lab proposal.\n\n` +
+    `Name: ${d.get('name') || '-'}\nInstitution: ${d.get('institution') || '-'}\nDesignation: ${d.get('designation') || '-'}\n` +
+    `Phone: ${d.get('phone') || '-'}\nEmail: ${d.get('email') || '-'}\nCity: ${d.get('city') || '-'}\n` +
+    `Lab size: ${d.get('lab_size') || '-'}\nLooking for: ${interests}`;
+}
+function setStatus(msg, cls) { statusEl.textContent = msg; statusEl.className = 'form-status ' + (cls || ''); }
+function requireBasics() {
+  const name = form.name.value.trim(), phone = form.phone.value.trim();
+  if (!name || !phone) { setStatus('Please enter your name and phone number.', 'err'); (name ? form.phone : form.name).focus(); return false; }
+  return true;
+}
+
+document.getElementById('waSend').addEventListener('click', () => {
+  if (!requireBasics()) return;
+  window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(enquiryText())}`, '_blank', 'noopener');
+});
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const data = new FormData(form);
-  const interests = data.getAll('interest').join(', ') || '-';
+  if (!requireBasics()) return;
+  submitBtn.disabled = true; setStatus('Sending…');
+  try {
+    const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+    const j = await res.json().catch(() => ({}));
+    if (res.ok && String(j.success) === 'true') {
+      form.reset();
+      setStatus('Thank you! Your request has been sent — we\'ll get back to you with a proposal soon.', 'ok');
+    } else { throw new Error(j.message || 'send failed'); }
+  } catch {
+    setStatus('Could not send right now — please use the WhatsApp button below or call us.', 'err');
+  } finally { submitBtn.disabled = false; }
+});
 
-  if (!CONFIGURED) {
-    const body = encodeURIComponent(
-      `Name: ${data.get('name')}\nInstitution: ${data.get('institution') || '-'}\nDesignation: ${data.get('designation') || '-'}\n` +
-      `Phone: ${data.get('phone')}\nEmail: ${data.get('email') || '-'}\nCity: ${data.get('city') || '-'}\n` +
-      `Lab size: ${data.get('lab_size') || '-'}\nLooking for: ${interests}`
-    );
-    window.location.href = `mailto:genalphalabs11@gmail.com?subject=${encodeURIComponent('Robotics Lab Proposal — ' + (data.get('name') || 'Enquiry'))}&body=${body}`;
-    statusEl.textContent = 'Opening your email app to send the enquiry…';
-    statusEl.className = 'form-status ok';
-    return;
+// ---------- lightbox for project photos ----------
+(() => {
+  const lb = document.getElementById('lightbox'); if (!lb) return;
+  const img = document.getElementById('lbImg'), cap = document.getElementById('lbCap'), stage = document.getElementById('lbStage');
+  const items = [...document.querySelectorAll('.proj')].map(f => ({
+    src: f.querySelector('img').src, alt: f.querySelector('img').alt,
+    cap: f.querySelector('figcaption') ? f.querySelector('figcaption').innerHTML : ''
+  }));
+  let idx = 0, zoomed = false, lastFocus = null;
+
+  function show(i) {
+    idx = (i + items.length) % items.length;
+    img.src = items[idx].src; img.alt = items[idx].alt; cap.innerHTML = items[idx].cap;
+    unzoom();
+  }
+  function unzoom() { zoomed = false; img.classList.remove('zoomed'); img.style.transformOrigin = '50% 50%'; stage.scrollTo(0, 0); }
+  function open(i) {
+    lastFocus = document.activeElement; show(i);
+    lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden'; document.getElementById('lbClose').focus();
+  }
+  function close() {
+    lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = ''; unzoom(); if (lastFocus) lastFocus.focus();
   }
 
-  submitBtn.disabled = true;
-  statusEl.textContent = 'Sending…'; statusEl.className = 'form-status';
-  try {
-    const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
-    if (res.ok) { form.reset(); statusEl.textContent = 'Thank you! We\'ll get back to you with a proposal soon.'; statusEl.className = 'form-status ok'; }
-    else throw new Error();
-  } catch { statusEl.textContent = 'Could not send right now — please call or email us directly.'; statusEl.className = 'form-status err'; }
-  finally { submitBtn.disabled = false; }
-});
+  document.querySelectorAll('.proj').forEach((f, i) => {
+    f.addEventListener('click', () => open(i));
+    f.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(i); } });
+  });
+  document.getElementById('lbClose').addEventListener('click', close);
+  document.getElementById('lbPrev').addEventListener('click', e => { e.stopPropagation(); show(idx - 1); });
+  document.getElementById('lbNext').addEventListener('click', e => { e.stopPropagation(); show(idx + 1); });
+  lb.addEventListener('click', e => { if (e.target === lb || e.target === stage) close(); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') show(idx - 1); if (e.key === 'ArrowRight') show(idx + 1);
+  });
+
+  // tap / click on the photo toggles 2.5x zoom around the tapped point
+  img.addEventListener('click', e => {
+    e.stopPropagation();
+    if (zoomed) { unzoom(); return; }
+    const r = img.getBoundingClientRect();
+    img.style.transformOrigin = `${((e.clientX - r.left) / r.width * 100).toFixed(1)}% ${((e.clientY - r.top) / r.height * 100).toFixed(1)}%`;
+    zoomed = true; img.classList.add('zoomed');
+  });
+
+  // swipe left/right for prev/next (only when not zoomed)
+  let sx = 0, sy = 0;
+  stage.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  stage.addEventListener('touchend', e => {
+    if (zoomed) return;
+    const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) show(dx < 0 ? idx + 1 : idx - 1);
+  }, { passive: true });
+})();
